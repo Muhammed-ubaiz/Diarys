@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fleet Tracking Hero — Demo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html, body { margin: 0; }
+  body { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif; }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  .glow-pulse { animation: pulse-glow 2.4s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glow-pulse { animation: none; }
+  }
+
+  /* Car marker: JS drives its transform (translate + rotate) every frame to follow #route-path */
+  #car-marker { transform-box: fill-box; transform-origin: center; }
+</style>
+</head>
+<body class="bg-gray-950">
+
+<!-- =========================================================
+     FLEET TRACKING HERO
+     - Dark map background (custom SVG grid + glowing route)
+     - Car icon follows the route path via plain JS
+       (path.getPointAtLength — no GSAP dependency required)
+     - Respects prefers-reduced-motion (car parks at a fixed point, no RAF loop)
+     ========================================================= -->
+<section class="relative w-full min-h-screen overflow-hidden bg-gray-950 flex items-center">
+
+  <!-- BACKGROUND MAP + ROUTE + CAR -->
+  <svg
+    id="map-svg"
+    class="absolute inset-0 w-full h-full"
+    viewBox="0 0 1200 700"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+  >
+    <defs>
+      <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1" />
+      </pattern>
+      <radialGradient id="map-vignette" cx="50%" cy="35%" r="75%">
+        <stop offset="0%" stop-color="#0b1220" stop-opacity="0" />
+        <stop offset="100%" stop-color="#020617" stop-opacity="0.9" />
+      </radialGradient>
+      <filter id="route-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- dark base + subtle grid, like a night-mode map tile -->
+    <rect width="1200" height="700" fill="#020617" />
+    <rect width="1200" height="700" fill="url(#map-grid)" />
+
+    <!-- a few muted "city block" shapes for depth -->
+    <g fill="#0f172a" opacity="0.9">
+      <rect x="120" y="120" width="180" height="120" rx="6" />
+      <rect x="360" y="80" width="140" height="90" rx="6" />
+      <rect x="760" y="420" width="200" height="140" rx="6" />
+      <rect x="980" y="180" width="150" height="100" rx="6" />
+      <rect x="560" y="480" width="160" height="110" rx="6" />
+    </g>
+
+    <!-- soft vignette so the edges stay dark and the content overlay reads cleanly -->
+    <rect width="1200" height="700" fill="url(#map-vignette)" />
+
+    <!-- glowing route line (drawn twice: blurred glow layer + crisp top layer) -->
+    <path
+      d="M 60 560 C 220 560, 240 380, 380 360 C 540 340, 560 200, 720 190 C 860 182, 900 120, 1080 110"
+      fill="none"
+      stroke="#38bdf8"
+      stroke-width="10"
+      stroke-linecap="round"
+      opacity="0.35"
+      filter="url(#route-glow)"
+    />
+    <path
+      id="route-path"
+      d="M 60 560 C 220 560, 240 380, 380 360 C 540 340, 560 200, 720 190 C 860 182, 900 120, 1080 110"
+      fill="none"
+      stroke="#7dd3fc"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-dasharray="2 14"
+      class="glow-pulse"
+    />
+
+    <!-- start / destination pins -->
+    <circle cx="60" cy="560" r="6" fill="#38bdf8" />
+    <circle cx="1080" cy="110" r="6" fill="#34d399" />
+
+    <!-- car marker: a simple top-down car silhouette, repositioned every frame by JS -->
+    <g id="car-marker">
+      <g transform="translate(-16,-9)">
+        <rect x="0" y="3" width="32" height="12" rx="4" fill="#e2e8f0" />
+        <rect x="7" y="0" width="14" height="7" rx="2" fill="#0ea5e9" />
+        <circle cx="7" cy="16" r="3" fill="#0f172a" />
+        <circle cx="25" cy="16" r="3" fill="#0f172a" />
+      </g>
+    </g>
+  </svg>
+
+  <!-- dark gradient overlays for text readability, sitting above the map, below the content -->
+  <div class="absolute inset-0 z-[1] bg-gradient-to-r from-gray-950 via-gray-950/70 to-gray-950/20"></div>
+  <div class="absolute inset-0 z-[1] bg-gradient-to-t from-gray-950 via-transparent to-gray-950/40"></div>
+
+  <!-- HERO CONTENT -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-10 py-24">
+    <div class="max-w-xl">
+      <span class="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.25em] uppercase text-sky-300 mb-5">
+        <span class="w-2 h-2 rounded-full bg-sky-400 glow-pulse"></span>
+        Live Fleet Tracking
+      </span>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight text-white">
+        Track Your Journey
+        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-emerald-300">
+          in Real-Time
+        </span>
+      </h1>
+
+      <p class="mt-5 text-base sm:text-lg text-slate-400 leading-relaxed max-w-md">
+        Next-gen fleet tracking that shows every vehicle, every route, and every ETA — live on the map,
+        down to the second.
+      </p>
+
+      <div class="mt-9 flex flex-col sm:flex-row gap-4">
+        <a
+          href="#get-started"
+          class="inline-flex items-center justify-center gap-2 bg-sky-400 hover:bg-sky-300 text-gray-950 font-bold text-sm px-7 py-3.5 rounded-xl shadow-[0_0_30px_rgba(56,189,248,0.35)] hover:shadow-[0_0_40px_rgba(56,189,248,0.5)] transition-all"
+        >
+          Get Started
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
+          </svg>
+        </a>
+        <a
+          href="#live-demo"
+          class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 text-white font-semibold text-sm px-7 py-3.5 rounded-xl backdrop-blur-sm hover:bg-white/5 transition-colors"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M10 8.5l6 3.5-6 3.5v-7z" fill="currentColor" stroke="none" />
+          </svg>
+          Live Demo
+        </a>
+      </div>
+
+      <!-- quick stat row, common in fleet/logistics dashboards -->
+      <div class="mt-12 grid grid-cols-3 gap-6 max-w-md border-t border-white/10 pt-6">
+        <div>
+          <p class="text-2xl font-extrabold text-white">12.4k</p>
+          <p class="text-xs text-slate-500 mt-1">Active vehicles</p>
+        </div>
+        <div>
+          <p class="text-2xl font-extrabold text-white">99.9%</p>
+          <p class="text-xs text-slate-500 mt-1">Uptime</p>
+        </div>
+        <div>
+          <p class="text-2xl font-extrabold text-white">&lt;2s</p>
+          <p class="text-xs text-slate-500 mt-1">Update latency</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var path = document.getElementById('route-path');
+    var car = document.getElementById('car-marker');
+    var totalLength = path.getTotalLength();
+
+    var DURATION_MS = 9000; // one full pass along the route
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function placeAt(progress) {
+      var dist = progress * totalLength;
+      var point = path.getPointAtLength(dist);
+      // sample a point slightly ahead to compute the heading angle for rotation
+      var aheadDist = Math.min(dist + 1.5, totalLength);
+      var ahead = path.getPointAtLength(aheadDist);
+      var angle = Math.atan2(ahead.y - point.y, ahead.x - point.x) * (180 / Math.PI);
+      car.setAttribute(
+        'transform',
+        'translate(' + point.x + ',' + point.y + ') rotate(' + angle + ')'
+      );
+    }
+
+    if (reduceMotion) {
+      // static: park the car partway along the route instead of animating
+      placeAt(0.35);
+      return;
+    }
+
+    var start = null;
+    function tick(timestamp) {
+      if (start === null) start = timestamp;
+      var elapsed = (timestamp - start) % DURATION_MS;
+      var progress = elapsed / DURATION_MS;
+      placeAt(progress);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+
+</body>
+</html>
