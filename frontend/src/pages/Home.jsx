@@ -173,7 +173,7 @@ const testimonials = [
 
 function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden h-screen flex items-center bg-blue-950">
+    <section className="relative w-full overflow-hidden min-h-screen flex items-center bg-blue-950">
       <motion.img
         src={overlandHero}
         alt="An overlanding 4x4 parked on a mountain ridge above the clouds"
@@ -192,7 +192,7 @@ function HeroSection() {
         className="absolute inset-x-0 top-0 h-24 sm:h-28 bg-gradient-to-b from-blue-950/45 to-transparent pointer-events-none"
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pt-24 sm:pt-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

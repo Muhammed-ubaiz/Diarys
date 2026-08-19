@@ -26,7 +26,7 @@ const PhoneIcon = (props) => (
 function Footer() {
   return (
     <footer className="bg-blue-700 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-24 sm:pb-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10 lg:gap-8 pb-12">
           {/* brand */}
           <div>

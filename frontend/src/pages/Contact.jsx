@@ -189,7 +189,7 @@ function Contact() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative w-full overflow-hidden bg-white h-screen flex items-center">
+      <section className="relative w-full overflow-hidden bg-white min-h-screen flex items-center">
         <motion.img
           src={contactHero}
           alt="Let's Connect — we're here to help you plan your next adventure. Reach our travel team by phone, email, live chat, or in person"
@@ -208,7 +208,7 @@ function Contact() {
           className="absolute inset-x-0 top-0 h-24 sm:h-28 bg-gradient-to-b from-blue-950/40 to-transparent pointer-events-none"
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full pt-24 sm:pt-28">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

@@ -232,6 +232,10 @@ function InternationalTourPackage() {
           className="absolute inset-0 w-full h-full object-cover object-[68%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 sm:via-white/38 to-transparent" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-24 sm:h-28 bg-gradient-to-b from-blue-950/45 to-transparent pointer-events-none"
+        />
 
         <div className="relative z-10 h-full flex items-center pt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full">

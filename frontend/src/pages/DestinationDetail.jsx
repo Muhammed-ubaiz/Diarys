@@ -472,6 +472,10 @@ function DestinationDetail() {
           className="absolute inset-y-0 left-0 w-full sm:w-3/5 opacity-40"
           style={{ backgroundImage: 'radial-gradient(#93c5fd 1px, transparent 1px)', backgroundSize: '20px 20px' }}
         />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-24 sm:h-28 bg-gradient-to-b from-blue-950/45 to-transparent pointer-events-none"
+        />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 w-full grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           <div>
