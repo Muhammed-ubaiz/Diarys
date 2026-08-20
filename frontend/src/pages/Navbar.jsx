@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import logo from '../assets/images/logo/logo-blue.png';
@@ -8,9 +8,15 @@ const HERO_OVERLAY_PATHS = ['/', '/about', '/contact', '/flight-ticketing', '/vi
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(null);
   const location = useLocation();
   const isHeroPage = HERO_OVERLAY_PATHS.includes(location.pathname) || location.pathname.startsWith('/destinations/');
   const isTransparent = isHeroPage && !scrolled && !mobileOpen;
+
+  if (location.pathname !== prevPathname) {
+    setPrevPathname(location.pathname);
+    setScrolled(false);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -18,10 +24,6 @@ function Navbar() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  useEffect(() => {
-    setScrolled(false)
-  }, [location.pathname])
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : ''

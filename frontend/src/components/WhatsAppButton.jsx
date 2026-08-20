@@ -1,5 +1,3 @@
-import React from 'react'
-
 const WHATSAPP_NUMBER = '918891245778'
 
 const WhatsAppIcon = (props) => (

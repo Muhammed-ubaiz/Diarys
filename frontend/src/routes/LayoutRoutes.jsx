@@ -1,5 +1,5 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom'
 import Navbar from '../pages/Navbar'
 import Footer from '../pages/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
@@ -12,9 +12,20 @@ import InternationalTourPackage from '../pages/InternationalTourPackage'
 import VisaAssistance from '../pages/VisaAssistance'
 import DestinationDetail from '../pages/DestinationDetail'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 function Layout() {
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       <Outlet />
       <Footer />

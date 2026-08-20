@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import visaHero from '../assets/images/hero/Gemini_Generated_Image_tschdktschdktsch.png'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import contactHero from '../assets/images/hero/ChatGPT Image Aug 19, 2026, 12_34_30 PM.png'
 

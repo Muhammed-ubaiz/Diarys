@@ -1,4 +1,3 @@
-import React from 'react'
 import { motion } from 'framer-motion'
 import georgiaKakheti from '../assets/images/gallery/10 amazing things to do in Georgia.jpg'
 import bridgeOfPeace from '../assets/images/gallery/Bridge of Peace in Tbilisi, Georgia.jpg'
