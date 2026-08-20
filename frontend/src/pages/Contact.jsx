@@ -372,7 +372,7 @@ function Contact() {
             <div className="relative h-64 lg:h-auto min-h-[280px]">
               <iframe
                 title="Diary's Tourism office location"
-                src="https://maps.google.com/maps?q=Kochi,Kerala,India&z=14&output=embed"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=76.2273%2C9.9312%2C76.3273%2C10.0312&layer=mapnik&marker=9.9816%2C76.2999"
                 className="absolute inset-0 w-full h-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
